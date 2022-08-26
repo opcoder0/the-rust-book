@@ -33,3 +33,14 @@ fn shadowing() {
         println!("Found {spaces} spaces");
     }
 }
+
+// Can only be used with nightly after including the feature
+// fn wrapping() {
+//     // in debug mode the code panics when over/under flow occurs.
+//     // in release mode the value loops back
+//     // some wrapping functions that can be used in release mode.
+//     let i = Wrapping(255u8);
+//     let one = Wrapping(1u8);
+//     let ans = wrapping_add(i, one);
+//     println!("Wrapping i:{i} + one:{one} = {ans}");
+// }
