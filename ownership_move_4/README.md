@@ -24,3 +24,19 @@ $6 = (*mut alloc::string::String) 0x7fffffffd980
 `s1` and `s2` are stored on the stack with the structure which holds the `length, capacity, pointer to data on heap`.
 
 ![String Structure](https://doc.rust-lang.org/book/img/trpl04-01.svg)
+
+The image below shows the variable `s2` goes out of scope after the block. And `s1` was cleaned as it was borrowed in the block.
+
+```
+fn scoped_ownership_move() {
+    let s1: String = String::from("scoped: hello");
+    println!("s1: {}", s1);
+    {
+        let s2: String = s1;
+        println!("s2: {}", s2);
+    }
+    println!("done");
+}
+```
+
+![GDB](https://github.com/opcoder0/the-rust-book/blob/main/img/owership-gdb.png?raw=true)
