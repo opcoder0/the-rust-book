@@ -13,6 +13,11 @@ fn main() {
     // The macro takes ownership and returns it back.
     println!("{:#?}", r);
     r = dbg!(r);
+
+    //
+    // or a reference could be passed into
+    // dbg(&r);
+    //
     dbg!("Area: {}", area(&r));
 }
 

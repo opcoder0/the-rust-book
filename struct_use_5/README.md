@@ -16,14 +16,14 @@ struct Rectangle {
     height: u32,
 }
 
-...
-...
+fn main() {
 
     let mut r = Rectangle {
         height: 36,
         width: 24,
     };
    println!("{:#?}", r);
+   ...
 ```
 
 ## Debug Macro
@@ -38,7 +38,13 @@ fn main() {
     };
     // dbg! macro can be used to print values to stderr
     // The macro takes ownership and returns it back.
+
     r = dbg!(r);
+
+    // or a reference could be passed into
+
+    // dbg(&r);
+
     //    println!("{:#?}", r);
     dbg!("Area: {}", area(&r));
 }
