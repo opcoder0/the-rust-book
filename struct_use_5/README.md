@@ -1,7 +1,13 @@
 ## Struct Usage
 
-To print a struct it needs to implement the `std::fmt::Display` trait. This gives the user control over how/what to print from the struct. To use the default/dev friendly output of all members use the `{:?}` or `{:#?}` format specifiers after the struct specifies the outer attribute of `#[derive(Debug)]`.
+To print a struct it needs to implement the `std::fmt::Display` and `std::fmt::Debug` trait. This gives the user control over how/what to print from the struct. To use the default/dev friendly output of all members use the `{:?}` or `{:#?}` format specifiers after the struct specifies the outer attribute of `#[derive(Debug)]`.
 
+To get rid of the error add the `#[derive(Debug)]` attribute.
+
+```
+= help: the trait `Debug` is not implemented for `Rectangle`
+= note: add `#[derive(Debug)]` to `Rectangle` or manually `impl Debug for Rectangle`
+```
 
 ```
 #[derive(Debug)]
@@ -18,9 +24,6 @@ struct Rectangle {
         width: 24,
     };
    println!("{:#?}", r);
- 
-
-
 ```
 
 ## Debug Macro
