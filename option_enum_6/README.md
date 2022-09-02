@@ -61,3 +61,9 @@ fn plus_one(x: Option<i32>) -> Option<i32> {
 
 For the case-1 `x` matches `Some(n)` arm and `n` holds 5;
 For the case-2 `x` matches `None` arm and returns back `None`;
+
+### Using `if let` syntax
+
+For cases where `match` is wordy `if let` can be used.
+
+
