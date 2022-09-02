@@ -56,6 +56,12 @@ fn main() {
     println!("plus_one({:?}) => {:?}", n, m);
 
     if_let();
+
+    println!("if let else syntax");
+    let m: Option<Message> = Some(Message::Move { x: 4, y: 4 });
+    if_let_else(m);
+    let n: Option<Message> = None;
+    if_let_else(n);
 }
 
 fn enum_match_no_values(m: MessageType) {
@@ -106,9 +112,12 @@ fn if_let() {
     if let Some(max) = config_max {
         println!("Configured max {}", max);
     }
+}
 
-    let m: Option<Message> = Some(Message::Move { x: 4, y: 4 });
+fn if_let_else(m: Option<Message>) {
     if let Some(point) = m {
         println!("point: {:?}", point);
+    } else {
+        println!("no point");
     }
 }
