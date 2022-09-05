@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "funcs_3"
+name = "datatypes"
 version = "0.1.0"
