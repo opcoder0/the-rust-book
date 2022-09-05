@@ -1,5 +1,5 @@
 [package]
-name = "enum_pattern_matching_6"
+name = "enum_pattern_matching"
 version = "0.1.0"
 edition = "2021"
 
