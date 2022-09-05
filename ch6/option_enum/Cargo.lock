@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "option_enum_6"
+name = "option_enum"
 version = "0.1.0"
