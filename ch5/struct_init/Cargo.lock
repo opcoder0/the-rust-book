@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "struct_init_5"
+name = "struct_init"
 version = "0.1.0"
