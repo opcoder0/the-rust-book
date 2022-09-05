@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "loops_3"
+name = "control_flow_loops"
 version = "0.1.0"
