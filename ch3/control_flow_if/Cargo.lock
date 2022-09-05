@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "if_3"
+name = "control_flow_if"
 version = "0.1.0"
