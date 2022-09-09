@@ -1,7 +1,23 @@
 fn main() {
     println!("Hello, world!");
-    // panic();
-    vec_panic();
+    panic_1();
+    // vec_panic();
+}
+
+fn panic_1() {
+    panic_2();
+}
+
+fn panic_2() {
+    panic_3();
+}
+
+fn panic_3() {
+    panic_4();
+}
+
+fn panic_4() {
+    panic();
 }
 
 fn panic() {
