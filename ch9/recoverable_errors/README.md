@@ -61,3 +61,18 @@ Alternative methods to implement the above logic using closures that uses concis
         }
     });
 ```
+
+## Shortcuts for panic on error: unwrap and expect
+
+For cases where code needs to 'panic on error' there are shortcut methods on the `Result<T, E>` type -
+
+- `unwrap`
+- `expect`
+
+### Unwrap
+
+`unwrap` returns the contained value and consumes the self. In case of an error `unwrap` panics with the error.
+
+### Expect
+
+`expect` returns the contained value and consumes the self. In case of an error `expect` panics with an additional error message adding context.
