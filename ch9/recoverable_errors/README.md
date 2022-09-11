@@ -76,3 +76,42 @@ For cases where code needs to 'panic on error' there are shortcut methods on the
 ### Expect
 
 `expect` returns the contained value and consumes the self. In case of an error `expect` panics with an additional error message adding context.
+
+
+## Propogating Errors
+
+Propogating error to the caller. Instead of handling errors in the function a `Result<T, E>` is returned -
+
+```
+fn read_username() -> Result<String, io::Error> {
+    let result = File::open("username.txt");
+    let mut username_file = match result {
+        Ok(f) => f,
+        Err(err) => return Err(err),
+    };
+
+    let mut username = String::new();
+    let result = username_file.read_to_string(&mut username);
+    match result {
+        Ok(_) => return Ok(username),
+        Err(err) => Err(err),
+    }
+}
+```
+
+Propogating errors is a very common scenario. So there is a shortcut for this in Rust.
+
+## Propogating Errors: A shortcut using ? operator
+
+The `?` operator placed after a `Result` value works the same way as the `match` operator defined above. If the `Result` returned was 
+- `Ok` value then the contained value returned to the expression
+- `Err` the error is returned from the function.
+
+```
+fn read_username_shortcut() -> Result<String, io::Error> {
+    let mut username_file = File::open("username.txt")?;
+    let mut username = String::new();
+    username_file.read_to_string(&mut username)?;
+    Ok(username)
+}
+```
