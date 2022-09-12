@@ -115,3 +115,38 @@ fn read_username_shortcut() -> Result<String, io::Error> {
     Ok(username)
 }
 ```
+
+## Where can the ? operator be used
+
+The `?` operator can be used in functions whose return type is compatible with the value the `?` is used on.
+
+Example -
+
+```
+use std::fs::File;
+
+fn main() {
+    let greeting_file = File::open("hello.txt")?;
+}
+```
+
+The code above does not compile because the `?` operator follows the `Result<T, E>` value returned by `File::open` while `main` returns `()` is not compatible with `Result<T, E>`.
+
+The `?` operator can be used with values of type -
+
+- `Result<T, E>`
+- `Option<T>`
+- Values that implement `FromResidual<Result<Infalliable, std::io::Error>>`
+
+The `main` function returns `()` (by default when it doesn't return anything). `main` being special can only return certain types/values. The code can be changed to -
+
+```
+fn main() -> Result<(), Box<dyn Error>> {
+  let f = std::fs::File::open("hello.txt")?;
+  Ok(())
+}
+```
+
+This function above can return `()` or `Box<dyn Error>` - which means any type of error. 
+
+*NOTE* - The `main` function can return any types that implement the trait `std::process::Termination`.
