@@ -118,3 +118,114 @@ fn notify<T: Summary>(item: &T) {
 ```
 
 The trait as parameter using `impl <trait>` syntax is good for specifying simpler cases. For more complex cases the trait bound syntax is suitable.
+
+## Specifying multiple trait bounds using + syntax
+
+More than one trait bound can be specified. 
+
+Example -
+
+```
+fn notify(item: &(impl Summary + Display))
+```
+
+Same using the generic type notation -
+
+```
+fn notify<T: Summary + Display>(item: &T)
+```
+
+## Clearer trait bounds with `where` clause
+
+Having multiple trait bounds leaves the above syntax cluttered and difficult to read/write. The `where` clause is used in such cases
+
+```
+fn to<T, U>(t: &T, u: &U) -> T 
+	where T: Display + Clone,
+	      U: Diplay + Debug
+{
+
+}
+```
+
+## Returning types that implement Traits
+
+The `impl <trait>` syntax can also be used in the return position to return anything that implements a particular trait. Example -
+
+```
+fn return_summarizable() -> impl Summary {
+	Tweet {
+		username: "tcm",
+		content: "era of abundance...is it really?",
+		retweet: false,
+		reply: false,
+	}
+}
+```
+
+This is mostly useful in cases of **Iterators** and **Closures**. For example an iterator for say a Vector which only the compiler knows implements the Iterator trait and returns the trait. The caller just needs to call the methods `next()`, `prev()`, `begin()`, `end()` and so on to interact with the actual type.
+
+**NOTE** - _When using `impl <trait>` syntax for returning you can specify / return only a single type. For example the following won't work -_
+
+```
+fn return_summarizable(switch: bool) -> impl Summary {
+	if switch {
+	    Tweet {
+		username: String::from("tcm"),
+		content: String::from("era of abundance... is it really?"),
+		retweet: false,
+		reply: false,
+	    }
+	} else {
+	    NewsArticle {
+		author: String::from("the common man"),
+		location: String::from("news paper"),
+		content: String::from("era of abundance... is it really?"),
+		headline: String::from("era of abundance... is it really?"),
+	    }
+	}
+}
+```
+
+This doesn't work due to restrictions around how `impl <trait>` has been implemented in the compiler. More on how to get around this is in Chapter 17.
+
+## Using trait bounds to conditionally implement methods
+
+We can implement methods conditionally for types that implement certain specified traits. 
+
+Example - The `new` function is available for all types of `T`. But the `display` is only implemented only for types that implement the `Display` and `PartialOrd` traits.
+
+```
+use std::cmp::PartialOrd;
+use std::fmt::Display;
+
+struct Pair<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Pair<T> {
+    fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
+// conditionally implement methods based on the type of trait
+//
+impl<T: Display + PartialOrd> Pair<T> {
+    fn display(&self) {
+        if self.x > self.y {
+            println!("pair x {} < pair y => {}", self.x, self.y);
+        } else {
+            println!("pair y {} < pair x => {}", self.y, self.x);
+        }
+    }
+}
+
+fn main() {
+    let p1 = Pair::new(5, 10);
+    println!("DISPLAY");
+    p1.display();
+}
+```
+
