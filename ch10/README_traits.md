@@ -83,3 +83,28 @@ fn main() {
 ```
 
 The above code will call the default implementation.
+
+**NOTE-1** The default implementation of a trait method can call other methods of the trait though they have not been implmented. This can provide useful functionality in the default implementation.
+
+**NOTE-2** It is not possible to call the default implementation from an overridden implementation.
+
+## Traits as parameters
+
+Any function can accept a trait as a parameter. This allows the caller to pass in any of the types that implement the trait as arguments. To specify the parameter type use the syntax `impl <trait>`. 
+
+This example adds `notify` function which takes a `Summary` trait as argument -
+
+```
+fn notify(item: &impl Summary) {
+    println!("Breaking News! {}", item.summarize());
+}
+```
+
+In the caller code -
+
+```
+notify(&tweet);
+notify(&news);
+```
+
+
