@@ -229,3 +229,21 @@ fn main() {
 }
 ```
 
+## Conditionally implement trait for any type that implements a trait
+
+Conditionally implement trait for any type that implements a trait. This is called _blanket implementations_ and is used widely in standard library. 
+
+For example the standard library implements the `ToString` trait on any type that also implements the `Display` trait. And the code looks like -
+
+```
+impl<T: Display> ToString for T {
+}
+```
+
+This let's us do things like -
+
+```
+let s = 3.to_string();
+```
+
+_Blanket Implementations_ appear in the documentation for the trait in the "Implementors" section.
