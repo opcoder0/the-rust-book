@@ -107,4 +107,14 @@ notify(&tweet);
 notify(&news);
 ```
 
+## Trait bound syntax
 
+The above method of using `impl <trait>` is a syntactic sugar for the longer notation of using trait bound sytax which uses generics to specify the `trait` as a generic type. Example -
+
+```
+fn notify<T: Summary>(item: &T) {
+    println!("Breaking News! {}", item.summarize());
+}
+```
+
+The trait as parameter using `impl <trait>` syntax is good for specifying simpler cases. For more complex cases the trait bound syntax is suitable.
