@@ -35,4 +35,19 @@ Rust uses the borrow checker to catch such errors.
 
 ## The Borrow Checker
 
+The Rust compiler has a borrow checker that compares the scopes to determine if all borrows are valid.
 
+```
+fn main() {
+    let r;                // ---------+-- 'a
+                          //          |
+    {                     //          |
+        let x = 5;        // -+-- 'b  |
+        r = &x;           //  |       |
+    }                     // -+       |
+                          //          |
+    println!("r: {}", r); //          |
+}                         // ---------+
+```
+
+The compiler sees that the lifetime of `r` which is `'a` is greater than lifetime of `x` which is `'b'`. And `r` refers to `x` which has lesser lifetime. The compiler catches this error as shown above.
