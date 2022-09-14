@@ -183,3 +183,69 @@ struct LinkedList<'a> {
     next: &'a LinkedList<'a>,
 }
 ```
+
+## Lifetime Elision
+
+We learnt that every reference has a lifetime and the annotation needs to be specified for the function / struct. However in [Chapter 4](../ch4/slice_type/src/main.rs:73) we did not specify a lifetime and the code worked.
+
+```
+fn first_word_slice(s: &str) -> &str {
+    let bytes = s.as_bytes();
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[..i];
+        }
+    }
+    &s[..]
+}
+```
+
+We don't have to do this -
+
+```
+fn first_word_slice<'a>(s: &'a str) -> &'a str
+```
+
+Prior to Rust 1.0 every reference required specifying lifetime annotations. Rust now recognizes common patterns in developers code from which it is able to infer the lifetimes. Going further more such cases/patterns might be identified and there would be even lesser cases to specify the annotations.
+
+These patterns programmed into Rust's reference analysis is called _lifetime elision rules_. These rules are not for programmers but for the Rust compiler. When rust applies these rules and still finds ambiguity then it issues an error to the user asking the user to specify lifetime annotations.
+
+_Lifetimes_ on functions / method parameters are called _input lifetimes_
+_Lifetimes_ on return values are called _output lifetimes_
+
+**There are 3 Lifetime Elision Rules -**
+
+The compiler uses these three rules to figure out the annotations when they are not specified explicitly.
+
+- *RULE-1* 
+  - This applies to the input lifetimes.
+  - The compiler assigns a lifetime parameter to each parameter that is a reference. As an example -
+
+  A function with one parameter -
+  ```
+    fn foo<'a>(x: &'a str)
+  ```
+
+  A function with two parameters gets two separate lifetime parameters -
+  ```
+    fn foo<'a, 'b>(x: &'a str, y: &'b str)
+  ```
+
+- *RULE-2*
+  - If there is exactly one input lifetime parameter then that lifetime is assigned to all the output lifetime parameters. Example -
+  ```
+    fn foo<'a>(x: i32, s: &'a str) -> &'a str
+  ```
+
+- *RULE-3*
+  - If there are multiple input lifetime parameters but one of them is `&self` or `&mut self` (methods) the lifetime of `self` is assigned to all output parameters.
+
+
+Let's pretend to be the compiler and apply the lifetime parameters on the following signtures -
+
+| Statement                                | Rule - 1                                               | Rule - 2                                     | Rule - 3 | NOTES                                                                                              |
+|------------------------------------------|--------------------------------------------------------|----------------------------------------------|----------|----------------------------------------------------------------------------------------------------|
+| `fn first_word(s: &str) -> &str {`       | `fn first_word<'a>(s: &'a str) -> &str {`              | `fn first_word<'a>(s: &'a str) -> &'a str {` | N/A      |                                                                                                    |
+| `fn longest(x: &str, y: &str) -> &str {` | `fn longest<'a, 'b>(x: &'a str, y: &'b str) -> &str {` |                                              |          | Compiler throws an error as it cannot determine if the output lifetime needs to come from 'a or 'b |
+
+

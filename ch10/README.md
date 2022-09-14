@@ -17,3 +17,4 @@ Chapter 10 discusses three important topics -
   - [generic_lifetimes_in_functions](./generic_lifetimes_in_functions)
   - [fix_generic_lifetime_in_funcs](./fix_generic_lifetime_in_funcs)
   - [test_lifetime_annotation](./test_lifetime_annotation)
+  - [lifetime_annotation_in_structs](./lifetime_annotation_in_structs)
