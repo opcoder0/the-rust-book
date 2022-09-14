@@ -16,3 +16,4 @@ Chapter 10 discusses three important topics -
   - [lifetimes_dangling_ref](./lifetimes_dangling_ref)
   - [generic_lifetimes_in_functions](./generic_lifetimes_in_functions)
   - [fix_generic_lifetime_in_funcs](./fix_generic_lifetime_in_funcs)
+  - [test_lifetime_annotation](./test_lifetime_annotation)
