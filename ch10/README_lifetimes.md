@@ -163,4 +163,23 @@ error[E0597]: `s2` does not live long enough
   |                                      ------ borrow later used here
 ```
 
+## Thinking in terms of lifetimes
 
+How do we specify a lifetime annotation ?
+
+Lifetime annotation is required and describes the lifetime of a reference with respect to another value (either another function parameter or return value). A single lifetime annotation parameter in itself is of no use.
+
+## Lifetime annotations in struct definitions
+
+If struct members are references then lifetime annotation needs to be added to every reference. Example -
+
+```
+struct ImportantExpert<'a> {
+    data: &'a str,
+}
+
+struct LinkedList<'a> {
+    data: i32,
+    next: &'a LinkedList<'a>,
+}
+```
