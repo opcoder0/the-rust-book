@@ -1,6 +1,6 @@
 ## Lifetimes and References
 
-In Rust every reference has a lifetime, which is the scope the reference is valid. Most of the lifetimes are implicit and inferred. Just as we annotate types when more than one type is possible; we annotate lifetime _only_ when lifetimes of references could be related in a few different ways. Rust uses the _generics_ syntax to annotate lifetimes.
+In Rust every reference has a lifetime, which is the scope the reference is valid. Most of the lifetimes are implicit and inferred. Just as we annotate types when more than one type is possible; we annotate lifetime _only_ when lifetimes of references could be related in a few different ways. Rust uses the _generics_ syntax to annotate lifetimes. A lifetime annotation is represented by an apostrophe (') followed by a short name or a character. Example `'a` or `'b` etc.
 
 ## Preventing dangling references with lifetimes
 
@@ -51,3 +51,42 @@ fn main() {
 ```
 
 The compiler sees that the lifetime of `r` which is `'a` is greater than lifetime of `x` which is `'b'`. And `r` refers to `x` which has lesser lifetime. The compiler catches this error as shown above.
+
+
+## Generic Lifetimes in Functions
+
+Here we'll write a function (`longest`) that takes two string slices and returns the longer one. 
+
+```
+fn main() {
+    let s1 = String::from("abcd");
+    let s2 = "this is a long string";
+
+    let result = longest(s1.as_str(), s2);
+    println!("longer string: {}", result);
+}
+
+fn longest(s1: &str, s2: &str) -> &str {
+    if s1.len() > s2.len() {
+        s1
+    } else {
+        s2
+    }
+}
+```
+
+The compiler gives out an error -
+
+```
+--> src/main.rs:9:35
+  |
+9 | fn longest(s1: &str, s2: &str) -> &str {
+  |                ----      ----     ^ expected named lifetime parameter
+  |
+  = help: this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `s1` or `s2`
+help: consider introducing a named lifetime parameter
+  |
+9 | fn longest<'a>(s1: &'a str, s2: &'a str) -> &'a str {
+  |           ++++      ++           ++          ++
+
+```
