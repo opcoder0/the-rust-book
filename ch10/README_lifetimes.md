@@ -124,3 +124,43 @@ This tells the compiler -
 - the return reference also lives atleast as long as the parameters.
 
 _NOTE_ - Here we are telling the compiler that the parameters' lifetime and that it should reject any other lifetimes.
+
+## Testing annotations by passing references with different lifetimes
+
+Now let's check what happens if we pass references with different lifetimes to the above example (`longest`). Example -
+
+```
+fn main() {
+    let s1 = String::from("this is a long string");
+    let result;
+    {
+        let s2 = String::from("abcd");
+        result = longest(s1.as_str(), s2.as_str());
+    }
+    println!("longer string is: {}", result);
+}
+
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+```
+
+Gives the following error -
+
+```
+error[E0597]: `s2` does not live long enough
+ --> src/main.rs:6:39
+  |
+6 |         result = longest(s1.as_str(), s2.as_str());
+  |                                       ^^^^^^^^^^^ borrowed value does not live long enough
+7 |     }
+  |     - `s2` dropped here while still borrowed
+8 |     println!("longer string is: {}", result);
+  |                                      ------ borrow later used here
+```
+
+
