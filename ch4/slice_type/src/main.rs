@@ -70,7 +70,7 @@ fn first_word(s: &String) -> usize {
 // changing signature to
 // fn first_word_slice(s: &str) -> &str
 // would allow the function to accept &String or &str (string literals/slices)
-fn first_word_slice(s: &String) -> &str {
+fn first_word_slice(s: &str) -> &str {
     let bytes = s.as_bytes();
     for (i, &item) in bytes.iter().enumerate() {
         if item == b' ' {
