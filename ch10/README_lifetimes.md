@@ -1,7 +1,6 @@
 ## Lifetimes and References
 
-In Rust every reference has a lifetime, which is the scope the reference is valid. Most of the lifetimes are implicit and inferred. Just as we annotate types when more than one type is possible; we annotate lifetime _only_ when lifetimes of references could be related in a few different ways. Rust uses the _generics_ syntax to annotate lifetimes. A lifetime annotation is represented by an apostrophe (') followed by a short name or a character. Example `'a` or `'b` etc.
-
+In Rust every reference has a lifetime, which is the scope the reference is valid. Most of the lifetimes are implicit and inferred. Just as we annotate types when more than one type is possible; we annotate lifetime _only_ when lifetimes of references could be related in a few different ways. Rust uses the _generics_ syntax to annotate lifetimes. 
 ## Preventing dangling references with lifetimes
 
 The main aim of _lifetimes_ is to prevent _dangling references_. The example below creates a dangling reference -
@@ -90,3 +89,38 @@ help: consider introducing a named lifetime parameter
   |           ++++      ++           ++          ++
 
 ```
+
+## Lifetime Annotation Syntax
+
+Lifetime annotations don't change how long any of the references live. Rather they describe the relationships of the lifetimes of different references. A lifetime annotation is represented by an apostrophe (') followed by a short name or a character. Example `'a` or `'b` etc.
+
+Syntax -
+
+```
+&i32        // a reference
+&'a i32     // a reference with explicit lifetime annotation
+&'a mut i32 // a mutable reference with an explicit lifetime annotation
+```
+
+A single lifetime annotation by itself does not have any meaning as they are meant to describe the lifetime relationship between references.
+
+## Lifetime annotations in function signatures
+
+Now to fix the above error with the `longest` function -
+
+```
+fn longest<'a>(s1: &'a str, s2: &'a str) -> &'a str {
+    if s1.len() > s2.len() {
+        s1
+    } else {
+        s2
+    }
+}
+```
+
+This tells the compiler -
+
+- the function accepts references to two string slices and they will both live atleast as long as lifetime `'a`. 
+- the return reference also lives atleast as long as the parameters.
+
+_NOTE_ - Here we are telling the compiler that the parameters' lifetime and that it should reject any other lifetimes.
