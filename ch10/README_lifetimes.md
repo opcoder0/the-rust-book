@@ -249,3 +249,29 @@ Let's pretend to be the compiler and apply the lifetime parameters on the follow
 | `fn longest(x: &str, y: &str) -> &str {` | `fn longest<'a, 'b>(x: &'a str, y: &'b str) -> &str {` |                                              |          | Compiler throws an error as it cannot determine if the output lifetime needs to come from 'a or 'b |
 
 
+## Lifetime annotations in method definitions
+
+When the struct with references have `impl` block the lifetime annotations needs to be specified there too. 
+
+```
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+impl<'a> ImportantExcerpt<'a> {
+    fn version(&self) -> i32 {
+        1
+    }
+
+    fn announce_and_return_part(&self, announce: &str) -> &str {
+        println!("Annoucement: {}", announce);
+        self.part
+    }
+}
+```
+
+For the function `announce_and_return_part` the compiler -
+
+- Applies Rule-1. It assigns a lifetime for each reference. One for `&self` and one for `&str`.
+- Rule-2 is not applicable as there are more than one parameter.
+- Applies Rule-3: The lifetime of `self` is assigned to the return value.
