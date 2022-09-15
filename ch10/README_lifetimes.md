@@ -284,4 +284,22 @@ For the function `announce_and_return_part` the compiler -
 let s: &'static str = "This is a static string";
 ```
 
+## Generic Trait Parameters, Trait Bounds, Lifetimes
 
+
+A function with generic trait parameters, trait bounds and lifetimes all together -
+
+
+```
+fn longest_with_announcement<'a, T>(x: &'a str, y: &'a str, annotation: T) -> &'a str
+where
+    T: Display,
+{
+    println!("announcement: {}", annotation);
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+```
