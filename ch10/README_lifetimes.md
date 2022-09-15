@@ -275,3 +275,13 @@ For the function `announce_and_return_part` the compiler -
 - Applies Rule-1. It assigns a lifetime for each reference. One for `&self` and one for `&str`.
 - Rule-2 is not applicable as there are more than one parameter.
 - Applies Rule-3: The lifetime of `self` is assigned to the return value.
+
+## The Static Lifetime
+
+`'static` is a special lifetime. This is used to indicate that the reference is valid for the entire life of the program. Example -
+
+```
+let s: &'static str = "This is a static string";
+```
+
+
