@@ -14,6 +14,7 @@ Notes and examples from [the rust book](https://doc.rust-lang.org/book/).
 - Chapter 08 - [Common Collections: Vectors, Storing UTF-8 text in Strings, Hash Maps](./ch8)
 - Chapter 09 - [Error Handling: Unrecoverable and recoverable errors](./ch9)
 - Chapter 10 - [Generic Types, Traits, Lifetimes](./ch10)
+- Chapter 11 - [Writing Automated Tests](./ch11)
 
 
 ### Useful links
