@@ -77,3 +77,6 @@ mod tests {
 }
 ```
 
+## Using Result<T, E> in tests
+
+So far we have seen functions that only panic. We could also have tests return a `Result<T, E>` which can later be handled with a `?` operator.
