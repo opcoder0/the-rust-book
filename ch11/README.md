@@ -74,8 +74,6 @@ mod tests {
     fn should_panic_more_than_upperbound() {
         let _g = Guess::new(200);
     }
-
-
 }
 ```
 
