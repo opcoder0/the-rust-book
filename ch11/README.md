@@ -80,3 +80,33 @@ mod tests {
 ## Using Result<T, E> in tests
 
 So far we have seen functions that only panic. We could also have tests return a `Result<T, E>` which can later be handled with a `?` operator.
+
+
+## Controlling How tests are run
+
+Just like `cargo run` compiles and runs the code. `cargo test` compiles the code with a test binary and runs the tests. By default each test is run in a separate thread. This improves performance. 
+
+It is important to note that each test should be independent of other tests. If there are any kind of dependencies like shared files, environment variables the tests could report failure due to race conditions. To resolve this the tests could be run in a single thread using `cargo test -- --test-threads=1` or remove dependencies between tests.
+
+## Showing function output
+
+By default, if a test passes, the Rust library captures anything that is printed to stdout. If the test fails the output is then shown along with the test output. To always display stdout output from test functions along with the test result run `cargo test --show-output`.
+
+## Running subset of tests by name
+
+To run a subset of tests by name pass the filter argument to `cargo test` example - `cargo test add` will run all the tests whose name has `add`. Give the full name of the test to run just one test.
+
+## Ignoring some tests unless specifically requested
+
+Some tests can be ignored using `#[ignore]` annotation. Example 
+
+```
+#[test]
+#[ignore]
+fn expensive_test() { }
+```
+
+The above test will be ignored by `cargo test`. 
+
+To run only the ignored tests run `cargo test -- --ignored`. 
+To run all the tests including the ignored ones run `cargo test --include-ignored`
