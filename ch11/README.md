@@ -110,3 +110,81 @@ The above test will be ignored by `cargo test`.
 
 To run only the ignored tests run `cargo test -- --ignored`. 
 To run all the tests including the ignored ones run `cargo test --include-ignored`
+
+## Test Organization
+
+Rust community think of tests as two main types -
+
+- unit tests - tests private functions from within the module.
+- integration tests - tests the module from outside as a user of the library.
+
+## Unit Tests
+
+- Unit tests are placed in the `src` directory in the source files.
+- By convention create a module named `tests` in each file and annotate it with `#[cfg(test)]`. This annotation tells Rust to compile and run this code only on `cargo test`. 
+
+_NOTE_ Integration tests go in a different directory and don't need to be annotated with `#[cfg(test)]`.
+
+## Testing private functions
+
+All functions can be accessed from the tests module. So private/internal functions can be tested.
+
+## Integration Tests
+
+These tests are entirely external to the library. They invoke only public functions (APIs). 
+
+- Create a directory called `tests` in the top level (same as `src`). Cargo knows to look for integration tests here. 
+- Any number of integration test files can be placed in here.
+- Each integration test file is a separate crate and the modules from the package needs to be imported into each test separately.
+- There are 3 sections in the report after running `cargo test`. A section for 
+  - Unit tests
+  - Integration tests
+  - Doc tests
+  _NOTE_ If a test fails in a section following tests won't be run. For example if a test fails in the unit test the integration test and doc tests won't be run.
+
+_NOTE-1_ We don't need to annotate integration tests with `#[cfg(test)]` as Cargo treats these as tests and compiles them only when running `cargo test`.
+_NOTE-2_ Each integration test file has its own section. With each test function per line.
+
+```
+.
+├── Cargo.lock
+├── Cargo.toml
+├── src
+│   └── lib.rs
+└── tests
+    └── add_tests.rs
+```
+
+Running `cargo test` runs both the unit tests and integration tests.
+
+## Submodules in integration tests
+
+As mentioned each file in `tests` directory is considered a separate crate. It is helpful to organize integration test crates in a modular fashion and have helper functions etc. 
+
+```
+.
+├── Cargo.lock
+├── Cargo.toml
+├── src
+│   └── lib.rs
+└── tests
+    └── add_tests.rs
+    └── common.rs     // <- common setup / helper functions used by other tests
+```
+
+*NOTE* `common.rs` is a separate crate. The tests will attempt run tests in `common.rs` which won't be found. To avoid running tests in crates with zero tests (like `common.rs`) a submodule can be created using the below convention
+
+```
+├── Cargo.lock
+├── Cargo.toml
+├── src
+│   └── lib.rs
+└── tests
+    ├── common
+    │   └── mod.rs
+    └── integration_test.rs
+```
+
+The above case will let the `common` module be used as a common function.
+
+**NOTE** Only library crates can have integration tests not binary crates.
