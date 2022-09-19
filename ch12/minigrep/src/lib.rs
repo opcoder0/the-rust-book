@@ -6,7 +6,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn one_result() {
+    fn case_sensitive() {
         let query = "duct";
         let content = "\
 Rust:
@@ -14,7 +14,18 @@ safe, fast, productive.
 Pick three.";
         assert_eq!(vec!["safe, fast, productive."], search(query, content));
     }
+
+    #[test]
+    fn case_insensitive() {
+        let query = "RUST";
+        let content = "\
+Rust:
+safe, fast, productive.
+Pick three.";
+        assert_eq!(vec!["Rust:"], search(query, content));
+    }
 }
+
 pub struct Config {
     pub query: String,
     pub file_path: String,
