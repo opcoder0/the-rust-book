@@ -15,6 +15,8 @@ Notes and examples from [the rust book](https://doc.rust-lang.org/book/).
 - Chapter 09 - [Error Handling: Unrecoverable and recoverable errors](./ch9)
 - Chapter 10 - [Generic Types, Traits, Lifetimes](./ch10)
 - Chapter 11 - [Writing Automated Tests](./ch11)
+- Chapter 12 - [Write a small command line program based on what was learnt before](./ch12)
+- Chapter 13 - [Functional language features: Iterators and Closures](./ch13)
 
 
 ### Useful links
