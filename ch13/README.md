@@ -62,3 +62,76 @@ A Closure can capture variables from its environment in 3 ways which directly ma
 - Take ownership
 
 The closure will decide which of these to use based on what the closure is doing.
+
+#### Borrow Immutably
+
+Example -
+
+```
+fn main() {
+    let list = vec![1, 2, 3, 4];
+    println!("Before defining closure: {:?}", list);
+    let borrow_immutably = || println!("from closure: {:?}", list);
+    println!("Before calling closure: {:?}", list);
+    borrow_immutably();
+    println!("After calling closure {:?}", list);
+}
+```
+
+#### Borrow Mutably
+
+Example -
+
+```
+fn main() {
+    let mut v1 = vec![1, 2, 3, 4];
+    println!("Before declaring closure: {:?}", v1);
+    let mut mutable_borrow = || v1.push(5);
+    //
+    // println!("Before calling closure {:?}", v1);
+    // ^
+    // |__  will result in error saying cannot borrow 
+    //      immutably when it is already borrowed mutably
+    //
+    mutable_borrow();
+    println!("After calling closure {:?}", v1);
+}
+```
+
+#### Taking Ownership
+
+If you want the closure to take ownership you can use the `move` keyword before the parameter list. This is useful when passing closure to a new thread. The data is moved to the thread so that it is owned by the thread. More on `move` closures in Chapter 16 when discussing concurrency.
+
+### Moving Captured Values Out of Closure and the Fn Traits
+
+Once a closure has captured a reference or captured ownership of a value where the closure is defined (thus affecting, if anything, is moved _into_ the closure), the code in the body of the closure defines what happens to the references or values when the closure is evaluated later (thus affecting, if anything, what is moved _out of_ the closure).
+
+A closure body can do any of the following - 
+
+- Move a captured value out of the closure
+- Mutate the captured value 
+- Neither move nor mutate value 
+- Capture nothing from the environment to begin with.
+
+The way the closure captures and handles values from the environment affects which traits the closure implements and traits are how structs and functions can specify what kinds of closures they can use. Closures will automatically implement one, two or all three of these `Fn` traits in an additive fashion.
+
+- `FnOnce` applies to closures that is called atleast once. All closures implement this trait because they are called atleast once. A closure that moves values outside its body implement `FnOnce` and none of the other `Fn` traits because it can be called only once.
+
+- `FnMut` applies to closures that don't move values outside their body but mutate them inside. These can be called more than once.
+
+- `Fn` applies to closures that don't move captured values outside the body. They don't mutate the values either. They also don't capture anything from their environment. Such closures can be called multiple times from multiple threads.
+
+Let's look at an example of `unwrap_or_else` implementation on the `Option<T>` -
+
+```
+impl<T> Option<T> {
+    pub fn unwrap_or_else<F>(self: f: F) -> T 
+    where
+    F: FnOnce() -> T {
+	    match self {
+	        Some(x) => x,
+		None => f(),
+	    }
+    }
+}
+```
