@@ -189,4 +189,28 @@ fn main() {
 
 The closure of `sort_by_key` gets one argument which is a reference to the element of the slice. The closure needs to return the key (`K`) which needs to implement `Ord` (i.e. could be used for ordering elements).
 
+The next example shows how a `value` is used to keep count of how many times the key-fn (closure body) is called from `sort_by_key`. Refer to the [example here](./sort_by_key_count_calls/src/main.rs). The code here does not work. The code attempts to keep count by pushing the `value` in to the `counter` each time the closure is called. However this is not allowed. Because after the `value` is *_moved_* into `counter` the first time there is nothing left in the `value`. The compiler throws the error -
+
+
+```
+error[E0507]: cannot move out of `value`, a captured variable in an `FnMut` closure
+  --> src/main.rs:25:22
+   |
+22 |       let value = String::from("sort key function has been called");
+   |           ----- captured outer variable
+23 |       let mut counter: Vec<String> = Vec::new();
+24 |       list.sort_by_key(|r| {
+   |  ______________________-
+25 | |         counter.push(value);
+   | |                      ^^^^^ move occurs because `value` has type `String`, which does not implement the `Copy` trait
+26 | |         r.width
+27 | |     });
+   | |_____- captured by this `FnMut` closure
+
+For more information about this error, try `rustc --explain E0507`.
+error: could not compile `sort_by_key_count_calls` due to previous error
+```
+
+It is instead easier to have a counter and increment the counter each time the key-fn is called. As shown here -
+
 
