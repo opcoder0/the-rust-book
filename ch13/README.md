@@ -121,6 +121,9 @@ The way the closure captures and handles values from the environment affects whi
 
 - `Fn` applies to closures that don't move captured values outside the body. They don't mutate the values either. They also don't capture anything from their environment. Such closures can be called multiple times from multiple threads.
 
+
+#### Unwrap_or_else
+
 Let's look at an example of `unwrap_or_else` implementation on the `Option<T>` -
 
 ```
@@ -135,3 +138,55 @@ impl<T> Option<T> {
     }
 }
 ```
+
+Note that the `unwrap_or_else` takes another generic argument of `F`. `F` is the closure. As declared in the `where` clause `F` is trait bound to `FnOnce`. Using the trait bound `FnOnce` in `unwrap_or_else` expresses the constraint that `unwrap_or_else` calls `f()` only once. 
+
+
+#### sort_by_key
+
+Now let's look at `sort_by_key` function. This function is used to sort a slice by a given key. [sort_by_key](https://doc.rust-lang.org/stable/std/vec/struct.Vec.html#method.sort_by_key) -
+
+```
+pub fn sort_by_key<K, F>(&mut self, f: F)
+where
+    F: FnMut(&T) -> K,
+    K: Ord,
+```
+
+`sort_by_key` uses `FnMut` instead of `FnOnce` trait bound. Example -
+
+```
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let mut list = vec![
+        Rectangle {
+            width: 2,
+            height: 3,
+        },
+        Rectangle {
+            width: 4,
+            height: 5,
+        },
+        Rectangle {
+            width: 1,
+            height: 2,
+        },
+        Rectangle {
+            width: 3,
+            height: 4,
+        },
+    ];
+    list.sort_by_key(|r| r.width);
+    println!("Sorted by keys: ");
+    println!("{:#?}", list);
+}
+```
+
+The closure of `sort_by_key` gets one argument which is a reference to the element of the slice. The closure needs to return the key (`K`) which needs to implement `Ord` (i.e. could be used for ordering elements).
+
+
