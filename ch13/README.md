@@ -189,7 +189,7 @@ fn main() {
 
 The closure of `sort_by_key` gets one argument which is a reference to the element of the slice. The closure needs to return the key (`K`) which needs to implement `Ord` (i.e. could be used for ordering elements).
 
-The next example shows how a `value` is used to keep count of how many times the key-fn (closure body) is called from `sort_by_key`. Refer to the [example here](./sort_by_key_count_calls/src/main.rs). The code here does not work. The code attempts to keep count by pushing the `value` in to the `counter` each time the closure is called. However this is not allowed. Because after the `value` is *_moved_* into `counter` the first time there is nothing left in the `value`. The compiler throws the error -
+The next example shows how a `value` is used to keep count of how many times the key-fn (closure body) is called from `sort_by_key`. Refer to the [example here](./sort_by_key_count_calls/src/main.rs). The code here does not work. The code attempts to keep count by pushing the `value` in to the `counter` each time the closure is called. However this is not allowed. Because after the `value` is **_moved_** into `counter` the first time there is nothing left in the `value`. The compiler throws the error -
 
 
 ```
@@ -211,6 +211,67 @@ For more information about this error, try `rustc --explain E0507`.
 error: could not compile `sort_by_key_count_calls` due to previous error
 ```
 
-It is instead easier to have a counter and increment the counter each time the key-fn is called. As shown here -
+It is instead easier to have a counter and increment the counter each time the key-fn is called. Shown here - [./sort_by_key_count_calls_incr/src/main.rs](./sort_by_key_count_calls_incr/src/main.rs).
+
+## Processing a series of items with Iterators
+
+Iterators let you iterate over each element in a collection. Example of an iterator on a vector -
+
+```
+let v1 = vec![1, 2, 3, 4];
+let iter = v1.iter();
+```
+
+The above initializes the iterator to the vector `v1`. The code below loops the vector `v1` using the iterator in the for loop -
+
+```
+for val in iter {
+    println!("val: {}", val);
+}
+```
+
+Here the `for` loop takes ownership of `iter` and 
+
+### Iterator trait and the next() method
+
+```
+pub trait Iterator {
+    type Item;
+
+    fn next(&mut self) -> Option<Self::Item>;
+}
+```
+
+**NOTE** The iterator defines an associated type (`Item`). More on associated types in Chapter 19. Here with the signature of the `next` method it says who ever implements `Iterator` trait must have a type of `Item`.
+
+Note that the `next()` method returns each value (i.e. `Some(&val)`) in the collection and when it reaches the end it returns `None`. Code here -
+
+```
+fn iterator_demonstration() {
+    let v1 = vec![1, 2, 3];
+    let mut iter = v1.iter();
+    assert_eq!(iter.next(), Some(&1));
+    assert_eq!(iter.next(), Some(&2));
+    assert_eq!(iter.next(), Some(&3));
+    assert_eq!(iter.next(), None);
+}
+```
+
+**NOTE** Note that the `for` loop [here](./iterator_basics/src/main.rs:9) does not need a mutable iterator because it takes ownership of the iterator and uses it as required internally.
+
+The Iterator trait has number of methods defined with default implementations.
+
+### Methods that consume the iterator 
+
+Methods that call `next()` are said to consume the iterator. One such method is the `sum`. This calls `next` repeatedly and adds up the values of elements in the iterator.
+
+```
+fn iterator_sum() {
+    let v1 = vec![1, 2, 3, 4];
+    let iter = v1.iter();
+    let total: i32 = iter.sum();
+    println!("Sum of vector {:#?} is {}", v1, total);
+}
+```
 
 
