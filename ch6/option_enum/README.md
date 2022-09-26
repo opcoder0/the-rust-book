@@ -34,7 +34,7 @@ But the code that distinguishes the value would know if the value is valid if th
 
 ```
 
-`T` and `Option<T>` are different and `Option<T>`.
+`T` and `Option<T>` are different.
 
 ## Getting `T` out of `Option<T>`
 
@@ -64,6 +64,22 @@ For the case-2 `x` matches `None` arm and returns back `None`;
 
 ### Using `if let` syntax
 
-For cases where `match` is wordy `if let` can be used.
+For cases where `match` is wordy `if let` can be used. For some cases using `match` is verbose and has redundant code. `if let` provides a much cleaner syntax -
 
+```
+let optional = Some(7);
+match optional {
+    Some(v) => println!("Found value: {}", v),
+    _ => {},
+}
+```
 
+The above case shows a no-op for the None case. This could be expressed using `if let` as -
+
+```
+let optional = Some(7);
+if let Some(v) = optional {
+    println!("Found value: {}", v);
+} 
+// else can be specified if required.
+```
