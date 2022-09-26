@@ -1,6 +1,6 @@
 ## Ownership of struct data
 
-In the `User` struct definition all the fields were owned by the struct. If we specified this instead -
+In the [code here](./src/main.rs) `User` struct definition owns all its fields/members. If we specified this instead -
 
 ```
 struct User {
@@ -20,7 +20,7 @@ fn main() {
 }
 ```
 
-The above won't work because it is missing lifetime parameter. Check Chapter 10 for lifetimes.
+The above won't work because it is missing lifetime parameter. Check [Chapter 10](../../ch10) for lifetimes.
 
 ```
 struct User<'a> {
