@@ -5,13 +5,13 @@ Method to struct -
 - added in the `impl` block
 - always takes `self` as its first argument
 
-Here, the method `area` takes &self as its first argument. Here `&self` is shortcut to `&self: Self`.
+[Here](./src/main.rs), the method `area` takes &self as its first argument. Here `&self` is shortcut to `&self: Self`.
 
 A method can -
 
-- Borrow a non-mutable reference of self (-> &self)
-- Borrow a mutable reference to self (-> &mut self)
-- Take ownership of self (-> self)
+- Borrow a non-mutable reference of self (`&self`)
+- Borrow a mutable reference to self (`&mut self`)
+- Take ownership of self (`self`)
 
 ## Method call
 
