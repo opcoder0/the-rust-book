@@ -53,12 +53,12 @@ fn add(self, s: &str) -> String
 
 The function takes ownership of `self` in this case `s1` and `s2` accepts a reference. Rust uses _defer coercion_ which turns `&s2` to `&s2[..]`.
 
+We can see in the signature that `add` takes ownership of `self`, because `self` does not have an `&`. This means `s1` will be moved into the `add` call and will no longer be valid after that. So although `let s3 = s1 + &s2;` looks like it will copy both strings and create a new one, this statement actually takes ownership of `s1`, appends a copy of the contents of `s2`, and then returns ownership of the result. In other words, it looks like it’s making a lot of copies but isn’t; the implementation is more efficient than copying.
+
+
 ### The format! macro
 
 The `format!` macro is like `println!`. Except that it returns a `String` back.
-
-We can see in the signature that `add` takes ownership of `self``, because `self` does not have an `&`. This means `s1` will be moved into the `add` call and will no longer be valid after that. So although `let s3 = s1 + &s2;` looks like it will copy both strings and create a new one, this statement actually takes ownership of `s1`, appends a copy of the contents of `s2`, and then returns ownership of the result. In other words, it looks like it’s making a lot of copies but isn’t; the implementation is more efficient than copying.
-
 
 ### Indexing String
 
