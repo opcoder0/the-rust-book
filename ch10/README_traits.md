@@ -163,9 +163,13 @@ fn return_summarizable() -> impl Summary {
 }
 ```
 
-This is mostly useful in cases of **Iterators** and **Closures**. For example an iterator for say a Vector which only the compiler knows implements the Iterator trait and returns the trait. The caller just needs to call the methods `next()`, `prev()`, `begin()`, `end()` and so on to interact with the actual type.
+This is mostly useful for **Iterators** and **Closures**. 
 
-**NOTE** - _When using `impl <trait>` syntax for returning you can specify / return only a single type. For example the following won't work -_
+For example an iterator for say a `Vector`. Only the implementer needs to know the inner works of iterating a collection. The `iter()` method only returns the Iterator trait. The caller just needs to call the methods `next()`, `prev()`, `begin()`, `end()` and so on to interact with the actual type.
+
+**NOTE: When using `impl <trait>` syntax for returning you can specify / return only a single type.**
+
+For example the following won't work -
 
 ```
 fn return_summarizable(switch: bool) -> impl Summary {
