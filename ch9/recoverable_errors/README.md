@@ -9,7 +9,7 @@ enum Result<T, E> {
 }
 ```
 
-`Ok(T) returns the result of the operation.
+`Ok(T)` returns the result of the operation.
 `Err(E)` returns the error in case the operation failed. 
 
 This can be matched using `match` arms -
