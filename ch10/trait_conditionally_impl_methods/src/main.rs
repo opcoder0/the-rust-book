@@ -13,19 +13,14 @@ impl<T> Pair<T> {
 }
 
 // conditionally implement methods based on the type of trait
-//
 impl<T: Display + PartialOrd> Pair<T> {
     fn display(&self) {
-        if self.x > self.y {
-            println!("pair x {} < pair y => {}", self.x, self.y);
-        } else {
-            println!("pair y {} < pair x => {}", self.y, self.x);
-        }
+        println!("Pair({}, {})", self.x, self.y);
     }
 }
 
 fn main() {
     let p1 = Pair::new(5, 10);
-    println!("DISPLAY");
+    print!("Displaying pair: ");
     p1.display();
 }
