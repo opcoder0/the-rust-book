@@ -31,9 +31,9 @@ pub struct Guess {
 impl Guess {
     pub fn new(i: i32) -> Self {
         if i < 1 {
-            panic!("value should be more than 1");
+            panic!("value should be equal to or greater than 1");
         } else if i > 100 {
-            panic!("value should be less than 100");
+            panic!("value should be less than or equal to 100");
         } else {
             Guess { n: i }
         }
@@ -58,7 +58,7 @@ The expected output from rust -
 ---- tests::should_panic_wrong_expected_message stdout ----
 thread 'tests::should_panic_wrong_expected_message' panicked at 'value should be more than 1', src/lib.rs:8:13
 note: panic did not contain expected string
-      panic message: `"value should be more than 1"`,
+      panic message: `"value should be equal to or greater than 1"`,
  expected substring: `"value cannot be zero"`
 ```
 
@@ -70,7 +70,7 @@ mod tests {
     use super::*;
 
     #[test]
-    #[should_panic(expected = "should be less than 100")]
+    #[should_panic(expected = "should be less than or equal to 100")]
     fn should_panic_more_than_upperbound() {
         let _g = Guess::new(200);
     }
