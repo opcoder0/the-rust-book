@@ -291,11 +291,11 @@ A function with generic trait parameters, trait bounds and lifetimes all togethe
 
 
 ```
-fn longest_with_announcement<'a, T>(x: &'a str, y: &'a str, annotation: T) -> &'a str
+fn longest_with_announcement<'a, T>(x: &'a str, y: &'a str, announcement: T) -> &'a str
 where
     T: Display,
 {
-    println!("announcement: {}", annotation);
+    println!("announcement: {}", announcement);
     if x.len() > y.len() {
         x
     } else {
