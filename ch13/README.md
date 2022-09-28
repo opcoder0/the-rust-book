@@ -292,3 +292,18 @@ fn main() {
     println!("vector: {:?}", v);
 }
 ```
+
+## Improving the I/O project
+
+Now with the new skills around using `iterator` and `closures` the `minigrep` code can be further improved / refactored. Changes -
+
+- remove the `.clone()` in the `build` method and use an `iterator` instead of `Vector<String>` arguments.
+- Refactor the loops in `search` and `search_case_sensitive` to use `filter` iterator adaptor instead of looping.
+
+[Updated code is here.](../ch12/minigre/lib.rs)
+
+Iterator is the Rust idimomatic approach most programmers take. As it is faster and avoids erroneous bits of looping (like erroneous end conditions etc.).
+
+## Comparing Performance: Loops vs Iterator
+
+Iterators provide high level abstractions for looping which have the same / better performance than using loops.
