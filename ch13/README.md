@@ -274,4 +274,21 @@ fn iterator_sum() {
 }
 ```
 
+### Methods that produce other iterators (Iterator Adaptors)
 
+Iterator adaptors are different methods defined on the iterator trait. They don't consume the iterator but instead produce iterators with different properties by changing some aspect of the original iterator.
+
+Example -
+
+```
+fn main() {
+    let v = vec![1, 2, 3, 4];
+    let iter = v.iter().map(|x| x + 1);
+    // calls the closure above for each element. 
+    // The vector remains unchanged
+    for elem in iter {
+        println!("{}", elem);
+    }
+    println!("vector: {:?}", v);
+}
+```
