@@ -17,6 +17,7 @@ Notes and examples from [the rust book](https://doc.rust-lang.org/book/).
 - Chapter 11 - [Writing Automated Tests](./ch11/README.md)
 - Chapter 12 - [Write a small command line program based on what was learnt before](./ch12/minigrep/src/lib.rs)
 - Chapter 13 - [Functional language features: Iterators and Closures](./ch13/README.md)
+- Chapter 14 - [More about Cargo and Crates.io](./ch14/README.md)
 
 
 ### Useful links
