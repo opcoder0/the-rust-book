@@ -24,6 +24,7 @@ Notes and examples from [the rust book](https://doc.rust-lang.org/book/).
 
 - [Rust Blog](https://blog.rust-lang.org/)
 - [Rustnomicon](https://doc.rust-lang.org/nomicon/)
+- [Rust RFCs book](https://rust-lang.github.io/rfcs/introduction.html)
 - [Rust Style Guide, Best Practices](https://doc.rust-lang.org/1.0.0/style/README.html)
 - [Rust by example](https://doc.rust-lang.org/rust-by-example/)
 - [https://github.com/ctjhoa/rust-learning](https://github.com/ctjhoa/rust-learning)
