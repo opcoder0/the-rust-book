@@ -69,4 +69,53 @@ fn main() {
 }
 ```
 
+### Implementing our own Box like smart pointer
 
+In this example - 
+
+```
+#[derive(Debug, PartialEq)]
+struct MyBox<T>(T);
+
+impl<T> MyBox<T> {
+    pub fn new(x: T) -> Self {
+        Self(x)
+    }
+}
+
+fn main() {
+    let x = 5;
+    let y = MyBox::new(x);
+
+    assert_eq!(x, 5);
+
+    // assert_eq!(*y, 5);
+    // error[E0614]: type `MyBox<{integer}>` cannot be dereferenced
+}
+```
+
+The value in `y` (of type `MyBox<i32>`) cannot be dereferenced. 
+As it does not implement the `Deref` trait.
+
+### Treating a type like a reference by implementing `Deref` trait
+
+In order for a type to be treated as a reference the `Deref` trait needs to be implemented for the type.
+
+The `Deref` trait defines one method `deref` which borrows `self` and 
+returns a reference to the inner data. So in our case for `MyBox` that would be
+
+```
+use std::ops::Deref;
+
+impl<T> Deref for MyBox<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+    	&self.0
+    }
+}
+```
+
+Without the `Deref` trait the type cannot be dereferenced. 
+
+**NOTE** Behind the scenes the Rust compiler changes `*y` to `*(y.deref())`
