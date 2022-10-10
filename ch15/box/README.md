@@ -97,7 +97,7 @@ fn main() {
 The value in `y` (of type `MyBox<i32>`) cannot be dereferenced. 
 As it does not implement the `Deref` trait.
 
-### Treating a type like a reference by implementing `Deref` trait
+### Treating a type like a reference by implementing Deref trait
 
 In order for a type to be treated as a reference the `Deref` trait needs to be implemented for the type.
 
@@ -119,3 +119,10 @@ impl<T> Deref for MyBox<T> {
 Without the `Deref` trait the type cannot be dereferenced. 
 
 **NOTE** Behind the scenes the Rust compiler changes `*y` to `*(y.deref())`
+
+## Implicit Deref Coercion
+
+Deref coercion converts a reference type that implements the Deref trait into a reference of another type. For example the `String` type implements the Deref coercion that converts `&String` to `&str`. The example [here](./deref_coercion/src/main.rs) shows that the call to `decorate_print` does this -
+
+- MyBox<String>::deref returns &String
+- Rust compiler calls &String::deref which returns &str and that is passed to `decorate_print`
