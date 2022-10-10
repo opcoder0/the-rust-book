@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "regular_references"
+name = "regular_vs_boxed_ref"
 version = "0.1.0"
