@@ -15,4 +15,9 @@ Rust has a variety of smart pointers like -
 
 ## Using Box<T> to Point to Data on the Heap
 
+Read from [./box/README_box.md](./box/README_box.md)
+
+## Using Deref Trait to override `*` operator on a type
+
+Read from [./box/README_deref.md](./box/README_deref.md)
 
