@@ -21,3 +21,6 @@ Read from [./box/README_box.md](./box/README_box.md)
 
 Read from [./box/README_deref.md](./box/README_deref.md)
 
+## Drop Trait
+
+The second trait important to the smart pointer is the `Drop`, which lets you customize what happens when the instance goes out of scope.
