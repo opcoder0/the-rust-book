@@ -1,4 +1,4 @@
-## Smart Pointers
+# Smart Pointers
 
 Pointers are a general concept. The most common kind of pointer in Rust is a reference. They are indicated using the symbol `&` and they borrow the value. Smart pointers on the other hand are data structures which store metadata and have additional capabilities. 
 
@@ -13,14 +13,22 @@ Rust has a variety of smart pointers like -
 - `Ref<T>` and `RefMut<T>` referenced through `RefCell<T>` which enforces rules of borrowing at run-time rather than at compile time.
 
 
-## Using Box<T> to Point to Data on the Heap
+## Box, Deref, Drop
+
+### Using Box<T> to Point to Data on the Heap
 
 Read from [./box/README_box.md](./box/README_box.md)
 
-## Using Deref Trait to override `*` operator on a type
+### Using Deref Trait to override `*` operator on a type
 
 Read from [./box/README_deref.md](./box/README_deref.md)
 
-## Drop Trait
+### Drop Trait
 
 The second trait important to the smart pointer is the `Drop`, which lets you customize what happens when the instance goes out of scope.
+
+## Rc<T>, the reference counted smart pointer
+
+In majority of cases ownership is clear and a single value is owned by a single owner. However there are certain cases a single value is owned by multiple owners. For example the graph data structures multiple edges might point to the same node and owned by multiple edges.
+
+Read from [./rc/README_rc.md](./rc/README_rc.md)
