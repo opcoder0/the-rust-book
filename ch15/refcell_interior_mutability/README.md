@@ -48,10 +48,10 @@ Use `RefCell<T>` to mutate an immutable object;
 
 Usecases where this is useful is Mock Objects. Example of using mock objects can be seen 
 
-- Example - 1 (Without using RefCell<T> - throws error)
-- Example - 2 (Using RefCell<T> - fixes the issue)
+- [Example-1](./example_1/src) (Without using RefCell<T> - throws error)
+- Example-2 (Using RefCell<T> - fixes the issue)
 
-[Example - 1] throws the following error upon running `cargo test` 
+[Example-1](./example_1/src) throws the following error upon running `cargo test` 
 
 ```
 error[E0596]: cannot borrow `self.sent_messages` as mutable, as it is behind a `&` reference
