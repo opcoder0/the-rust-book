@@ -32,3 +32,16 @@ The second trait important to the smart pointer is the `Drop`, which lets you cu
 In majority of cases ownership is clear and a single value is owned by a single owner. However there are certain cases a single value is owned by multiple owners. For example the graph data structures multiple edges might point to the same node and owned by multiple edges.
 
 Read from [./rc/README_rc.md](./rc/README_rc.md)
+
+## RefCell<T> and the Interior Mutability Pattern
+
+Interior Mutability is a design pattern in Rust that allows you to mutate data even when there are immutable references to that data; this action is disallowed by the borrowing rules. To mutate data the pattern uses `unsafe` code inside the data structures to bend Rust's usual rules. We can use types that use interior mutability pattern only when we can ensure that the borrowing rules will be followed at runtime even though the compiler can't guarantee that.
+
+
+
+| Smart Pointer Type | Single vs. Multiple Owners | Mutable vs Immutable Borows | Compile Time vs Runtime | 
+|--------------------|----------------------------|-----------------------------|-------------------------|
+| Box<T>             | Single Owner               | Immutable & Mutable Borrows | Compile Time            |
+| Rc<T>              | Multiple Owners            | Immutable                   | Compile Time            |
+| RefCell<T>         | Single Owner               | Mutable Borrows Checked at runtime & Interior Mutability | Runtime                 |
+
