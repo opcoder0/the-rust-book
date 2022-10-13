@@ -1,5 +1,35 @@
 # Rc<T>, the reference counted smart pointer
 
+Single threaded reference counting pointers. Rc provides shared ownership but in an immutable way. The `Rc` type doesn't implement the `Send` trait so when it is passed between threads the compiler catches it. Example of passing around Rc to functions for sharing -
+
+```
+use std::rc::Rc;
+
+fn main() {
+    let n = Rc::new(5);
+    println!("created rc: {}", n);
+    foo(Rc::clone(&n));
+    println!("reference count (in main) = {}", Rc::strong_count(&n));
+}
+
+fn foo<T>(n: Rc<T>) 
+where
+    T: std::fmt::Display
+{
+    println!("received: {}", n);
+    println!("reference count (in foo) = {}", Rc::strong_count(&n));
+}
+```
+
+Output is -
+
+```
+created rc: 5
+received: 5
+reference count (in foo) = 2
+reference count (in main) = 1
+```
+
 In majority of cases ownership is clear and a single value is owned by a single owner. However there are certain cases a single value is owned by multiple owners. For example the graph data structures multiple edges might point to the same node and owned by multiple edges.
 
 Let's take the cons list as an example again. To represent a list like this one -
@@ -63,4 +93,6 @@ Rc (five_ref): 5, address 0x0000563da171f9e0
 number of references: 2
 ```
 
+## Weak References
 
+Weak Reference doesn't increment the strong count. A `Rc` that's downgraded returns a weak pointer that can be used via an `upgrade` call. `upgrade` returns an `Option` which has `Some` and if the value is dropped it returns `None`. See [weak reference](./weak_ref) code here.

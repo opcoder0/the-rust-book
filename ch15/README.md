@@ -33,6 +33,10 @@ In majority of cases ownership is clear and a single value is owned by a single 
 
 Read from [./rc/README_rc.md](./rc/README_rc.md)
 
+## Weak Reference
+
+Read from [./rc/README_rc.md](./rc/README_rc.md). Example [./rc/weak_ref](./rc/weak_ref)
+
 ## RefCell<T> and the Interior Mutability Pattern
 
 Interior Mutability is a design pattern in Rust that allows you to mutate data even when there are immutable references to that data; this action is disallowed by the borrowing rules. To mutate data the pattern uses `unsafe` code inside the data structures to bend Rust's usual rules. We can use types that use interior mutability pattern only when we can ensure that the borrowing rules will be followed at runtime even though the compiler can't guarantee that.
@@ -46,3 +50,9 @@ Interior Mutability is a design pattern in Rust that allows you to mutate data e
 | RefCell<T>         | Single Owner               | Mutable Borrows Checked at runtime & Interior Mutability | Runtime                 |
 
 More about [Refcell here](./refcell_interior_mutability/README.md)
+
+## Reference Cycles can leak memory
+
+Rust's memory safety rules make it difficult to leak memory but not impossible. It is possible to use `Rc<T>` and `RefCell<T>` to create a cyclical reference chains. Reference cycles are logical bugs and Rust cannot detect / prevent creation of such programs. 
+
+Example of a reference cycle here - [reference cycle](./ref_cycle)
