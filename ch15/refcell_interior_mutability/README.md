@@ -70,3 +70,22 @@ error: could not compile `example_1` due to previous error
 **NOTE** - The Messenger trait signature for `send` uses an immutable `&self` while the `MockMessenger` needs to update itself. And to overcome this issue and implement a mock messenger we use `RefCell<T>`.
 
 [Example-2](./example_2/src) fixes the issue reported above. The `RefCell` has `borrow_mut()` method that can borrow a mutable reference from within an immutable method. 
+
+## Keeping track of borrows at Runtime with RefCell<T>
+
+Just like we use `&` and `&mut` for a reference and mutable reference, with `RefCell<T>` we use `borrow` and `borrow_mut`. `borrow` returns `Ref<T>` and `borrow_mut` returns `RefMut<T>`. These functions keeps track of how many immutable / mutable references are given out and panics when borrow checks fail.
+
+## Having Mutable shared data using Rc<T> and RefCell<T> combination
+
+A common way to use RefCell<T> is in combination with Rc<T>. Recall that Rc<T> lets you have multiple owners of some data, but it only gives immutable access to that data. If you have an Rc<T> that holds a RefCell<T>, you can get a value that can have multiple owners and that you can mutate!
+
+`Rc<T>` lets you have multiple owners of some data immutably. `RefCell<T>` lets you have mutable data to a single owner. Combining them as shown below lets you have both -
+
+```
+let value = Rc::new(RefCell::new(5));
+```
+
+Example here - [./shared_mutability](./shared_mutability/src/main.rs)
+
+
+**NOTE** `RefCell<T>` is not suitable for multithreaded programs. We use `Mutex<T>` for multithreaded code.

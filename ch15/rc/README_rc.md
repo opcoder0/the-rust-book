@@ -38,8 +38,29 @@ Implementing this with Box will result in errors -
 
 Hence `Box<List>` can be changed to `Rc<List>`; This would let `b` and `c` to share `a`. The sharing is done by using `Rc::clone(&a)` instead of `a.clone()` which does deep copy. The `Rc::clone()` performs a shallow copy and increments the reference count. See the [example here](./shared_list/src/main.rs).
 
-### Cloning Rc<T> increases reference count
+## Rc<T> and reference count
 
-[Example here]()
+```
+use std::rc::Rc;
+
+fn main() {
+    let five = Rc::new(5);
+    let five_ptr = Rc::as_ptr(&five);
+    println!("Rc (five): {}, address: {:#?}", five, five_ptr);
+    let five_ref = Rc::clone(&five);
+    let five_ptr = Rc::as_ptr(&five_ref);
+    println!("Rc (five_ref): {}, address {:#?}", five_ref, five_ptr);
+    // cloning increases reference count
+    println!("number of references: {}", Rc::strong_count(&five));
+}
+```
+
+Output -
+
+```
+Rc (five): 5, address: 0x0000563da171f9e0
+Rc (five_ref): 5, address 0x0000563da171f9e0
+number of references: 2
+```
 
 
