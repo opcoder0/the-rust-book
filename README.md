@@ -19,6 +19,7 @@ Notes and examples from [the rust book](https://doc.rust-lang.org/book/).
 - Chapter 13 - [Functional language features: Iterators and Closures](./ch13/README.md)
 - Chapter 14 - [More about Cargo and Crates.io](./ch14/README.md)
 - Chapter 15 - [Smart Pointers](./ch15/README.md)
+- Chapter 16 - [Fearless Concurrency](./ch16/README.md)
 
 
 ### Useful links
