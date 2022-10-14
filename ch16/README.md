@@ -55,3 +55,51 @@ The above program terminates the thread prematurely.
 ## Waiting for all threads to finish using join handles
 
 A thread that is spawned returns a handle (`JoinHandle`) on which `join` method can be called to synchronize thread execution. Example [join threads](./join_thread). Call to `join` waits for the thread identified by the handle to finish at the calling point before proceeding.
+
+## Using move Closures with Threads 
+
+If closure tries to capture data from the surrounding.
+
+```
+use std::thread;
+
+fn main() {
+    let v = vec![1, 2, 3];
+
+    let handle = thread::spawn(|| {
+        println!("v from thread is: {:?}", v);
+    });
+
+    handle.join().unwrap();
+}
+```
+
+The code causes the compiler error -
+
+```
+ --> src/main.rs:6:32
+  |
+6 |     let handle = thread::spawn(|| {
+  |                                ^^ may outlive borrowed value `v`
+7 |         println!("v from thread is: {:?}", v);
+  |                                            - `v` is borrowed here
+  |
+```
+
+Use the `move` keyword -
+
+```
+use std::thread;
+
+fn main() {
+    let v = vec![1, 2, 3];
+
+    let handle = thread::spawn(move || {
+        println!("v from thread is: {:?}", v);
+    });
+
+    handle.join().unwrap();
+}
+```
+
+
