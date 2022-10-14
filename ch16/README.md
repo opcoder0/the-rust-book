@@ -49,3 +49,9 @@ fn main() {
 **NOTE -** Once the main thread / program terminates all other threads are terminated too.
 
 `thread::spawn` forces to stop the execution of thread for a short duration allowing a different thread to run.
+
+The above program terminates the thread prematurely.
+
+## Waiting for all threads to finish using join handles
+
+A thread that is spawned returns a handle (`JoinHandle`) on which `join` method can be called to synchronize thread execution. Example [join threads](./join_thread). Call to `join` waits for the thread identified by the handle to finish at the calling point before proceeding.
