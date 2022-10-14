@@ -87,5 +87,4 @@ let value = Rc::new(RefCell::new(5));
 
 Example here - [./shared_mutability](./shared_mutability/src/main.rs)
 
-
 **NOTE** `RefCell<T>` is not suitable for multithreaded programs. We use `Mutex<T>` for multithreaded code.

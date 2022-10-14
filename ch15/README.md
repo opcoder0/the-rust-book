@@ -56,3 +56,11 @@ More about [Refcell here](./refcell_interior_mutability/README.md)
 Rust's memory safety rules make it difficult to leak memory but not impossible. It is possible to use `Rc<T>` and `RefCell<T>` to create a cyclical reference chains. Reference cycles are logical bugs and Rust cannot detect / prevent creation of such programs. 
 
 Example of a reference cycle here - [reference cycle](./ref_cycle)
+
+Creating reference cycles is not easily done but can be done when using `RefCell` wraps an `Rc` or other such combinations. In such cases it is the responsibility of the programmer to not create loops.
+
+Another solution to avoid reference cycles is reorganizing your data structures so that some references express ownership and some references don't.
+
+## Preventing Reference Cycles: Turning an Rc<T> into Weak<T>
+
+Example here builds a graph using `Weak<T>` references
