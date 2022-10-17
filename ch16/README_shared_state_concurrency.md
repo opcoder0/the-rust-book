@@ -35,5 +35,87 @@ fn main() {
 }
 ```
 
+## Sharing a Mutex<T> Between Multiple Threads
 
+Let's share a value among 10 threads.
 
+The [example-1](./mutex_shared_across_multiple_threads_1/src/main.rs) throws a compiler error that says the value `counter` was `move`-d in the previous iteration. Rust detects that the value is being moved into multiple threads.
+
+```
+    let counter = Mutex::new(0);
+    let mut handles = vec![];
+
+    for _ in 0..10 {
+        let handle = thread::spawn(move || {
+            let mut v = counter.lock().unwrap();
+            *v += 1;
+        });
+        handles.push(handle);
+    }
+    ...
+```
+
+```
+5  |     let counter = Mutex::new(0);
+   |         ------- move occurs because `counter` has type `Mutex<i32>`, which does not implement the `Copy` trait
+...
+9  |         let handle = thread::spawn(move || {
+   |                                    ^^^^^^^ value moved into closure here, in previous iteration of loop
+
+```
+
+To fix this we use the `Rc<T>` which allows us to share values as shown in [example - 2](./mutex_shared_across_multiple_threads_2/src/main.rs) by -
+
+```
+    let counter = Rc::new(Mutex::new(0));
+    let mut handles = vec![];
+
+    for _ in 0..10 {
+        let counter = Rc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut v = counter.lock().unwrap();
+            *v += 1;
+        });
+        handles.push(handle);
+    }
+    for handle in handles {
+        handle.join().unwrap();
+    }
+```
+
+Here Rust detects that `Rc<T>` is being used by multiple threads and `Rc<T>` is not thread safe. As it does not implement `Send` trait. It throws the error -
+
+```
+error[E0277]: `Rc<Mutex<i32>>` cannot be sent between threads safely
+   --> src/main.rs:11:22
+    |
+11  |           let handle = thread::spawn(move || {
+    |  ______________________^^^^^^^^^^^^^_-
+    | |                      |
+    | |                      `Rc<Mutex<i32>>` cannot be sent between threads safely
+12  | |             let mut v = counter.lock().unwrap();
+13  | |             *v += 1;
+14  | |         });
+    | |_________- within this `[closure@src/main.rs:11:36: 14:10]`
+    |
+    = help: within `[closure@src/main.rs:11:36: 14:10]`, the trait `Send` is not implemented for `Rc<Mutex<i32>>`
+note: required because it's used within this closure
+   --> src/main.rs:11:36
+    |
+11  |           let handle = thread::spawn(move || {
+    |  ____________________________________^
+12  | |             let mut v = counter.lock().unwrap();
+13  | |             *v += 1;
+14  | |         });
+    | |_________^
+note: required by a bound in `spawn`
+   --> /home/saikiran/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/thread/mod.rs:653:8
+    |
+653 |     F: Send + 'static,
+    |        ^^^^ required by this bound in `spawn`
+
+```
+
+## Using Arc<T> instead of Rc<T> to share across multiple threads
+
+Fortunately the above problem can be solved with `Arc<T>` which stands for _atomic_ reference count. This one is thread safe as show in [example - 3](./mutex_shared_across_multiple_threads_3/src/main.rs)
