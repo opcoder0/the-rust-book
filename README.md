@@ -20,6 +20,7 @@ Notes and examples from [the rust book](https://doc.rust-lang.org/book/).
 - Chapter 14 - [More about Cargo and Crates.io](./ch14/README.md)
 - Chapter 15 - [Smart Pointers](./ch15/README.md)
 - Chapter 16 - [Fearless Concurrency](./ch16/README.md)
+- Chapter 17 - [Object Oriented Features of Rust](./ch17/README.md)
 
 
 ### Useful links
