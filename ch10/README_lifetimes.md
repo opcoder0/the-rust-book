@@ -1,6 +1,7 @@
 ## Lifetimes and References
 
 In Rust every reference has a lifetime, which is the scope the reference is valid. Most of the lifetimes are implicit and inferred. Just as we annotate types when more than one type is possible; we annotate lifetime _only_ when lifetimes of references could be related in a few different ways. Rust uses the _generics_ syntax to annotate lifetimes. 
+
 ## Preventing dangling references with lifetimes
 
 The main aim of _lifetimes_ is to prevent _dangling references_. The example below creates a dangling reference -
@@ -123,7 +124,7 @@ This tells the compiler -
 - the function accepts references to two string slices and they will both live atleast as long as lifetime `'a`. 
 - the return reference also lives atleast as long as the parameters.
 
-_NOTE_ - Here we are telling the compiler that the parameters' lifetime and that it should reject any other lifetimes.
+_NOTE_ - Here we are telling the compiler that the parameters' lifetime and that it should reject if the lifetime does not match.
 
 ## Testing annotations by passing references with different lifetimes
 
@@ -183,6 +184,8 @@ struct LinkedList<'a> {
     next: &'a LinkedList<'a>,
 }
 ```
+
+*NOTE* What this says is the member `data` (`&'a str`) must live until the type `ImportantExpert` lives.
 
 ## Lifetime Elision
 
